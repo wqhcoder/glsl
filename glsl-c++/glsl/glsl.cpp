@@ -14,6 +14,7 @@ void init();
 void render();
 void reshape(int width, int height);
 void setShaders();
+void showInformation();
 char* readShaderSource(const char* fileName);
 
 GLhandleARB programObject;
@@ -21,8 +22,10 @@ GLfloat lightPosition[] = {30.0f, 30.0f, 30.0f};
 GLfloat eyePosition[] = {0.0f, 0.0f, 3.0f};
 GLfloat ambient[] = {1.0f, 0.0f, 0.0f, 1.0f};
 GLfloat lightColor[] = {1.0f, 1.0f, 1.0f};
-GLfloat Ns = 80.0f;
+GLfloat Ns = 8.0f;
 GLfloat attenuation = 0.1f;
+
+GLhandleARB vertexShaderObject, fragShaderObject;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -34,7 +37,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	init();
 	glutDisplayFunc(render);
 	glutReshapeFunc(reshape);
-	glutIdleFunc(render);
+	//glutIdleFunc(render);
 	glutMainLoop();
 
 	system("pause");
@@ -54,13 +57,16 @@ void setShaders()
 	char *fragShader = readShaderSource("sample.frag");
 
 	// 创建顶点着色器片断着色器对象并返回其句柄
-	GLhandleARB vertexShaderObject, fragShaderObject;
-	
 	vertexShaderObject = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
 	fragShaderObject = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 
 	//// 创建空白程序对象并返回其句柄
 	programObject = glCreateProgramObjectARB();
+
+	cout << "set shader" << endl;
+	cout << "vertexShaderObject = " << vertexShaderObject << endl;
+	cout << "fragShaderObject = " << fragShaderObject << endl;
+	cout << "programObject = " << programObject << endl << endl;
 
 	// glShaderSourceARB() 参数表:
     // GLhandleARB shader        --- 着色器
@@ -103,11 +109,12 @@ void render()
 {
 	cout << "render" << endl;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glEnable(GL_DEPTH_TEST);
 	
 	// 这里给shader进行赋值
-	glUseProgram(programObject);
+	//glUseProgram(programObject);
+	showInformation();
+
 	glUniform3f(glGetUniformLocation(programObject, "lightPosition"), lightPosition[0], lightPosition[1], lightPosition[2]);
 	glUniform3f(glGetUniformLocation(programObject, "eyePosition"), eyePosition[0], eyePosition[1], eyePosition[2]);
 	glUniform4f(glGetUniformLocation(programObject, "ambient"), ambient[0], ambient[1], ambient[2], ambient[3]);
@@ -147,9 +154,44 @@ char* readShaderSource(const char* fileName)
     return content;
 }
 
+void showInformation()
+{
+	int handle1, handle2, handle3;
+	int vertexCompileStatus, fragCompileStatus, programLinkStatus;
+	int attachCount;
+	int vertexSourceLength, fragSourceLength;
+	glGetObjectParameterivARB(vertexShaderObject, GL_OBJECT_TYPE_ARB, &handle1);
+	glGetObjectParameterivARB(fragShaderObject, GL_OBJECT_TYPE_ARB, &handle2);
+	glGetObjectParameterivARB(programObject, GL_OBJECT_TYPE_ARB, &handle3);
+	glGetObjectParameterivARB(vertexShaderObject, GL_OBJECT_COMPILE_STATUS_ARB, &vertexCompileStatus);
+	glGetObjectParameterivARB(fragShaderObject, GL_OBJECT_COMPILE_STATUS_ARB, &fragCompileStatus);
+	glGetObjectParameterivARB(programObject, GL_OBJECT_LINK_STATUS_ARB, &programLinkStatus);
+	glGetObjectParameterivARB(programObject, GL_OBJECT_ATTACHED_OBJECTS_ARB, & attachCount);
+	glGetObjectParameterivARB(vertexShaderObject, GL_OBJECT_SHADER_SOURCE_LENGTH_ARB, &vertexSourceLength);
+	glGetObjectParameterivARB(fragShaderObject, GL_OBJECT_SHADER_SOURCE_LENGTH_ARB, &fragSourceLength);
+	cout << "vertexShaderObject handle = " << handle1 << endl;
+	cout << "fragShaderObject handle = " << handle2 << endl;
+	cout << "programObject handle = " << handle3 << endl;
+	cout << "vertexShaderObject compile status = " << vertexCompileStatus << endl;
+	cout << "fragShaderObject compile status = " << fragCompileStatus << endl;
+	cout << "programObject link status = " << programLinkStatus << endl;
+	cout << "programObject attach count = " << attachCount << endl;
+	cout << "vertexObject length = " << vertexSourceLength << endl;
+	cout << "fragObject length = " << fragSourceLength << endl;
+
+	char* vertexSources = new char[vertexSourceLength + 1];
+	char* fragSources = new char[fragSourceLength + 1];
+	glGetShaderSourceARB(vertexShaderObject, vertexSourceLength + 1, NULL, vertexSources);
+	glGetShaderSourceARB(fragShaderObject, fragSourceLength + 1, NULL, fragSources);
+	cout << "vertex sources:" << endl;
+	cout << vertexSources << endl;
+	cout << "frag sources:" << endl;
+	cout << fragSources << endl;
+}
+
 void reshape(int width, int height)
 {
-	cout << "reshape" << endl;
+	/*cout << "reshape" << endl;*/
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
