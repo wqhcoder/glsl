@@ -19,7 +19,7 @@ char* readShaderSource(const char* fileName);
 
 GLhandleARB programObject;
 GLfloat lightPosition[] = {30.0f, 30.0f, 30.0f};
-GLfloat eyePosition[] = {0.0f, 0.0f, 3.0f};
+GLfloat eyePosition[] = {0.0f, 10.0f, 3.0f};
 GLfloat ambient[] = {1.0f, 0.0f, 0.0f, 1.0f};
 GLfloat lightColor[] = {1.0f, 1.0f, 1.0f};
 GLfloat Ns = 8.0f;
@@ -46,8 +46,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 void init()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	setShaders();
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+	//setShaders();
 }
 
 void setShaders()
@@ -113,18 +113,19 @@ void render()
 	
 	// 这里给shader进行赋值
 	//glUseProgram(programObject);
-	showInformation();
+	//showInformation();
 
-	glUniform3f(glGetUniformLocation(programObject, "lightPosition"), lightPosition[0], lightPosition[1], lightPosition[2]);
+	/*glUniform3f(glGetUniformLocation(programObject, "lightPosition"), lightPosition[0], lightPosition[1], lightPosition[2]);
 	glUniform3f(glGetUniformLocation(programObject, "eyePosition"), eyePosition[0], eyePosition[1], eyePosition[2]);
 	glUniform4f(glGetUniformLocation(programObject, "ambient"), ambient[0], ambient[1], ambient[2], ambient[3]);
 	glUniform4f(glGetUniformLocation(programObject, "lightColor"), lightColor[0], lightColor[1], lightColor[2], lightColor[3]);
 	glUniform1f(glGetUniformLocation(programObject, "Ns"), Ns);
-	glUniform1f(glGetUniformLocation(programObject, "attenuation"), attenuation);
+	glUniform1f(glGetUniformLocation(programObject, "attenuation"), attenuation);*/
 
 	glPushMatrix();
 	glTranslatef(0.0f, 0.0f, -20.0f);
-	glutSolidTeapot(4.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glutSolidTeapot(20.0f);
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -187,6 +188,23 @@ void showInformation()
 	cout << vertexSources << endl;
 	cout << "frag sources:" << endl;
 	cout << fragSources << endl;
+
+	int vertexCompileInfoLength, fragCompileInfoLength, programLinkInfoLength;
+	glGetObjectParameterivARB(vertexShaderObject, GL_OBJECT_INFO_LOG_LENGTH_ARB, &vertexCompileInfoLength);
+	glGetObjectParameterivARB(fragShaderObject, GL_OBJECT_INFO_LOG_LENGTH_ARB, &fragCompileInfoLength);
+	glGetObjectParameterivARB(programObject, GL_OBJECT_INFO_LOG_LENGTH_ARB, &programLinkInfoLength);
+	char* vertexCompileInfo = new char[vertexCompileInfoLength + 1];
+	char* fragCompileInfo = new char[fragCompileInfoLength + 1];
+	char* programLinkInfo = new char[programLinkInfoLength + 1];
+	glGetInfoLogARB(vertexShaderObject, vertexCompileInfoLength, NULL, vertexCompileInfo);
+	glGetInfoLogARB(fragShaderObject, fragCompileInfoLength, NULL, fragCompileInfo);
+	glGetInfoLogARB(programObject, programLinkInfoLength, NULL, programLinkInfo);
+	cout << "vertex compile infomation:" << endl;
+	cout << vertexCompileInfo << endl;
+	cout << "frag compile information:" << endl;
+	cout << fragCompileInfo << endl;
+	cout << "program link information:" << endl;
+	cout << programLinkInfo << endl;
 }
 
 void reshape(int width, int height)
@@ -196,7 +214,7 @@ void reshape(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(57, (GLfloat)width / height, 0.1f, 1000.0f);
+	gluPerspective(45, (GLfloat)width / height, 1.0f, 1000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
