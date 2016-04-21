@@ -1,11 +1,15 @@
-﻿生成启动时间为 2016/1/14 12:43:57。
+﻿生成启动时间为 2016/4/21 16:28:55。
      1>项目“F:\profiles\glsl\glsl-c++\glsl\glsl.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          E:\vs2012_file\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\glsl.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt  /D _CRT_SECURE_NO_WARNINGS glsl.cpp
          glsl.cpp
-     1>f:\profiles\glsl\glsl-c++\glsl\glsl.cpp(4): fatal error C1033: 无法打开程序数据库“f:\profiles\glsl\glsl-c++\glsl\debug\vc110.pdb”
-     1>已完成生成项目“F:\profiles\glsl\glsl-c++\glsl\glsl.vcxproj”(Build 个目标)的操作 - 失败。
+       Link:
+         E:\vs2012_file\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\profiles\glsl\glsl-c++\Debug\glsl.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\profiles\glsl\glsl-c++\Debug\glsl.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\profiles\glsl\glsl-c++\Debug\glsl.lib" /MACHINE:X86 Debug\glee.obj
+         Debug\glsl.obj
+         Debug\stdafx.obj
+         glsl.vcxproj -> F:\profiles\glsl\glsl-c++\Debug\glsl.exe
+     1>已完成生成项目“F:\profiles\glsl\glsl-c++\glsl\glsl.vcxproj”(Build 个目标)的操作。
 
-生成失败。
+生成成功。
 
-已用时间 00:00:00.14
+已用时间 00:00:14.53
